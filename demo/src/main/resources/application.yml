@@ -63,7 +63,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
 logging:
-  file: myapp.log
-  path: logs
+#  file: myapp.log
+#  path: logs
   level:
     com.example.demo.web.mapper: DEBUG

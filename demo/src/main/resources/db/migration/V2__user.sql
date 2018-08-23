@@ -1,8 +1,9 @@
 CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `account` varchar(100) DEFAULT NULL COMMENT '账号',
   `name` varchar(255) DEFAULT NULL COMMENT '用户名',
-  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `password` varchar(256) DEFAULT NULL COMMENT '密码',
   `salt` varchar(255) DEFAULT NULL,
   `state` varchar(1) DEFAULT '1' COMMENT '状态 0: 禁用; 1: 启用',
   `creator` varchar(50) DEFAULT NULL COMMENT '创建人',

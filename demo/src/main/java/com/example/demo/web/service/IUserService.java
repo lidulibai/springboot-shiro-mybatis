@@ -20,4 +20,8 @@ public interface IUserService {
 	public Set<String> findPermissionsByUserId(long id);
 	
 	public SysUser getUser(SysUser user);
+
+    public List<SysUser> getUserByAccount(String account);
+
+    public SysUser getUserByAccountAndPassword(SysUser user);
 }

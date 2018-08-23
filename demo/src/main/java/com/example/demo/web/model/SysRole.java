@@ -15,6 +15,11 @@ import lombok.EqualsAndHashCode;
 @TableName("sys_role")
 public class SysRole extends BaseModle {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;
     

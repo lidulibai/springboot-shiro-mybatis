@@ -1,5 +1,6 @@
 package com.example.demo.shiro;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -13,6 +14,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.web.model.SysUser;
@@ -38,22 +40,23 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         log.info("################ 执行 Shiro 凭证认证. ######################");
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        String name = token.getUsername();
-        String password = String.valueOf(token.getPassword());
+        String account = token.getUsername();
         SysUser user = new SysUser();
-        user.setName(name);
-        user.setPassword(password);
-        // 从数据库获取对应用户名密码的用户
-        SysUser userLogin = userService.getUser(user);
-        if (userLogin != null) {
+        user.setAccount(account);
+        // 从数据库获取对应用户名的用户
+        List<SysUser> userList = userService.getUserByAccount(account);
+        if (userList != null && !userList.isEmpty()) {
             // 用户为禁用状态
+            SysUser userLogin = userList.get(0);
             if (userLogin.getState() != 1) {
                 throw new DisabledAccountException();
             }
             log.info("################ Shiro 凭证认证成功. ######################");
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     userLogin, //用户
-                    userLogin.getPassword(), //密码
+                    userLogin.getPassword().toCharArray(), //密码
+//                    ShiroByteSource.of(userLogin.getSalt()),
+                    ByteSource.Util.bytes(userLogin.getSalt()),
                     getName()  //realm name
             );
             return authenticationInfo;

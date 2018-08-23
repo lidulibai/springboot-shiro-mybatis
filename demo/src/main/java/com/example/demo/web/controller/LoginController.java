@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.web.model.SysUser;
 
@@ -23,12 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 
     @PostMapping("/login")
+    @ResponseBody
     public String submitLogin(String username, String password, HttpServletRequest request) {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
-            // SysUser user = (SysUser) subject.getPrincipal();
         } catch (DisabledAccountException e) {
             request.setAttribute("msg", "账户已被禁用");
             return "login";
@@ -78,7 +79,8 @@ public class LoginController {
     public Object logout() {
         log.info("登出");
         Subject subject = SecurityUtils.getSubject();
-        subject.logout();
+        if(subject.isAuthenticated())
+            subject.logout();
         return "redirect:/auth/login";
     }
 

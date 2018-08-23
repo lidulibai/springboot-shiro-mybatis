@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.Filter;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -69,7 +70,29 @@ public class ShiroConfig {
     @Bean
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
+        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        myShiroRealm.setCachingEnabled(false);
         return myShiroRealm;
+    }
+    
+    /**
+     * 凭证匹配器
+     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
+     *  所以我们需要修改下doGetAuthenticationInfo中的代码;
+     * ）
+     * 可以扩展凭证匹配器，实现 输入密码错误次数后锁定等功能，下一次
+     * @return
+     */
+    @Bean(name="credentialsMatcher")
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+       HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+
+       hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+       hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+       //storedCredentialsHexEncoded默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
+       hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
+
+       return hashedCredentialsMatcher;
     }
 
     /**
@@ -92,7 +115,7 @@ public class ShiroConfig {
      */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("localhost");
+        redisManager.setHost("192.168.99.100");
         redisManager.setPort(6379);
         redisManager.setExpire(1800);// 配置缓存过期时间
         redisManager.setTimeout(0);

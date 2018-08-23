@@ -15,8 +15,16 @@ import lombok.EqualsAndHashCode;
 @TableName("sys_user")
 public class SysUser extends BaseModle {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @TableId(value = "id", type = IdType.ID_WORKER)
 	private long id;
+    
+    @TableId("account")
+    private String account;
     
 	@TableField("name")
 	private String name;

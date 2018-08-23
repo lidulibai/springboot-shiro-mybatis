@@ -1,5 +1,6 @@
 package com.example.demo.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -8,7 +9,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-public class BaseModle {
+public class BaseModle implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4741128083767427658L;
 
     @TableField("creator")
     private String creator;

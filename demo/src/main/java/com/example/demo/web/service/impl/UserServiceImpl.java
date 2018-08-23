@@ -56,5 +56,20 @@ public class UserServiceImpl implements IUserService {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    @Override
+    public List<SysUser> getUserByAccount(String account) {
+        return userMapper.selectList(new EntityWrapper<SysUser>().eq("account", account));
+    }
+    
+    @Override
+    public SysUser getUserByAccountAndPassword(SysUser user) {
+        List<SysUser> userList = userMapper.selectList(new EntityWrapper<SysUser>().eq("account", user.getAccount()).eq("password", user.getPassword()));
+        if(userList.isEmpty()) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
+    }
 
 }

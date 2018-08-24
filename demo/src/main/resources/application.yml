@@ -76,4 +76,5 @@ logging:
 #  file: myapp.log
 #  path: logs
   level:
-    com.example.demo.web.mapper: DEBUG
+    root: INFO
+#    com.example.demo.web.mapper: DEBUG

@@ -51,14 +51,14 @@ public class MyShiroRealm extends AuthorizingRealm {
             if (userLogin.getState() != 1) {
                 throw new DisabledAccountException();
             }
-            log.info("################ Shiro 凭证认证成功. ######################");
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                     userLogin, //用户
                     userLogin.getPassword().toCharArray(), //密码
-//                    ShiroByteSource.of(userLogin.getSalt()),
-                    ByteSource.Util.bytes(userLogin.getSalt()),
+                    ShiroByteSource.of(userLogin.getSalt()),
+//                    ByteSource.Util.bytes(userLogin.getSalt()),
                     getName()  //realm name
             );
+            log.info("################ Shiro 凭证认证成功. ######################");
             return authenticationInfo;
         }
         throw new UnknownAccountException();

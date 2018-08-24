@@ -24,6 +24,9 @@ import org.apache.shiro.web.util.WebUtils;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.web.model.SysUser;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class KickoutSessionControlFilter extends AccessControlFilter {
 
     private String kickoutUrl; //踢出后到的地址
@@ -68,6 +71,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
 
         Session session = subject.getSession();
+        log.debug("========= session 时间设置: " + String.valueOf(session.getTimeout()) + " =============");
         SysUser user = (SysUser) subject.getPrincipal();
         String username = user.getName();
         Serializable sessionId = session.getId();

@@ -32,9 +32,11 @@ public class LoginController {
             subject.login(token);
         } catch (DisabledAccountException e) {
             request.setAttribute("msg", "账户已被禁用");
+            log.info("账户已被禁用");
             return "login";
         } catch (AuthenticationException e) {
             request.setAttribute("msg", "用户名或密码错误");
+            log.info("用户名秘密错误");
             return "login";
         }
 
